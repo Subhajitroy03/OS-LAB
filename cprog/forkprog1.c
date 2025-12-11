@@ -7,6 +7,7 @@ int main(){
 	int id=fork();
 	printf("Programme starts...\n");
 	/// wait(some time) -> optional
+	//usleep(5000);
 	if(id==0){
 		printf("Inside Child process...\n");
 	}else if(id>0){
