@@ -12,7 +12,7 @@ int consumer_number=4;
 
 sem_t empty;
 sem_t full;
-pthread_mutex_t mutex;
+pthread_mutex_t mutex; // or sem_t binary_sem;
 
 
 int buffer[buffer_size];
@@ -25,13 +25,13 @@ void* producer(){
 		int x=rand()%100;
 	
 		sem_wait(&empty);
-		pthread_mutex_lock(&mutex);
+		pthread_mutex_lock(&mutex); //sem_wait(&binary_sem);
 		
 		buffer[in]=x;
 		
 		in=(in+1)%buffer_size;
 				
-		pthread_mutex_unlock(&mutex);
+		pthread_mutex_unlock(&mutex); //sem_post(&binary_sem);
 		sem_post(&full);
 		
 		printf("Producer produced: %d \n",x);
@@ -62,7 +62,7 @@ int main(){
 	
 	sem_init(&empty,0,buffer_size);
 	sem_init(&full,0,0);
-	pthread_mutex_init(&mutex,NULL);
+	pthread_mutex_init(&mutex,NULL); //sem_init(&binary_sem,1);
 	
 	pthread_t cons[consumer_number];
 	pthread_t prod[producer_number];
