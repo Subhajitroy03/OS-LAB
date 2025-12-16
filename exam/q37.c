@@ -15,15 +15,15 @@ int main(){
 	int fd[2];  // fd[0] for read and fd[1] for write
 	pipe(fd);  //creating a pipe and pipe needs an array of size 2
 	int id=fork(); // fork will create separate fd for child and parent , both are independent fd
-	if(id==0){  //child
-		close(fd[0]);  //child doesnot need read , so close
+	if(id>0){  
+		close(fd[0]);  
 		int x;
-		printf("Enter a number to child : ");
+		printf("Enter a number to parent : ");
 		scanf("%d",&x);
 		write(fd[1],&x,sizeof(x)); 
-		close(fd[1]); //close write now
+		close(fd[1]); 
 	}else{
-		close(fd[1]); //same , parent donot need write so close it
+		close(fd[1]); 
 		int y;
 		read(fd[0],&y,sizeof(y));
 		printf("Factors are: ");

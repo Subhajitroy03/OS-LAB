@@ -29,7 +29,7 @@ int main(){
 	if(id>0){  
 		close(fd[0]);  
 		int x;
-		printf("Enter a number to child : ");
+		printf("Enter a number to parent : ");
 		scanf("%d",&x);
 		write(fd[1],&x,sizeof(x)); 
 		close(fd[1]); 
