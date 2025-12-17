@@ -5,19 +5,28 @@ and after modification by all the threads. Synchronize the threads using mutex l
 #include<unistd.h>
 #include<pthread.h>
 #include <stdlib.h>
-#define MAX 100
-int arr[MAX];
+
 int n;
 pthread_mutex_t lock;
 
-void* 
+void* routine(void* a){
+	pthread_mutex_lock(&lock);
+	printf("Variable address before modification : %p\n ",&n);
+	n++;
+	printf("Variable address after modification : %p\n ",&n);
+	pthread_mutex_unlock(&lock);
+	pthread_exit(NULL);
+}
 int main(){
-	pthread_t t1,t2;
+	pthread_t t[10];
 	pthread_mutex_init(&lock,NULL);
-	pthread_create(&t1,NULL,&input_array,NULL);  
-	pthread_create(&t2,NULL,&bubblesort,NULL); 
-	pthread_join(t1,NULL);
-	pthread_join(t2,NULL);
+	printf("Variable address before starting : %p\n",&n);
+	for(int i=0;i<10;i++){
+		pthread_create(&t[i],NULL,&routine,NULL); 
+	}
+	for(int i=0;i<10;i++){
+		pthread_join(t[i],NULL); 
+	}
 	pthread_mutex_destroy(&lock);
 	return 0;
 }
